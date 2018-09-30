@@ -9,10 +9,10 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Urban Dictionary-->
+        <!--Search Table View Controller-->
         <scene sceneID="uKh-Sj-Gbx">
             <objects>
-                <tableViewController id="csh-4J-fwF" sceneMemberID="viewController">
+                <tableViewController id="csh-4J-fwF" customClass="SearchTableViewController" customModule="UrbanDictionary" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="QxH-RO-208">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -32,7 +32,9 @@
                             <outlet property="delegate" destination="csh-4J-fwF" id="3G3-AS-ABl"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Urban Dictionary" id="Og6-Ko-eTq"/>
+                    <navigationItem key="navigationItem" id="Og6-Ko-eTq">
+                        <barButtonItem key="rightBarButtonItem" systemItem="search" id="KdM-pv-a58"/>
+                    </navigationItem>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="cMT-E4-YYB" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

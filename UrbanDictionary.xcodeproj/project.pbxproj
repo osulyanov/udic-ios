@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7C854F1421614679007341DB /* SearchTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C854F1321614679007341DB /* SearchTableViewController.swift */; };
 		7C85E0A1215D5DD500DF3110 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C85E0A0215D5DD500DF3110 /* AppDelegate.swift */; };
 		7C85E0A3215D5DD500DF3110 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C85E0A2215D5DD500DF3110 /* ViewController.swift */; };
 		7C85E0A6215D5DD500DF3110 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7C85E0A4215D5DD500DF3110 /* Main.storyboard */; };
@@ -19,6 +20,7 @@
 		3240D346F33B7FAD4F7B5F3F /* Pods-UrbanDictionary.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UrbanDictionary.release.xcconfig"; path = "Pods/Target Support Files/Pods-UrbanDictionary/Pods-UrbanDictionary.release.xcconfig"; sourceTree = "<group>"; };
 		453BC83223A465CB6AFBE7CA /* Pods-UrbanDictionary.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UrbanDictionary.debug.xcconfig"; path = "Pods/Target Support Files/Pods-UrbanDictionary/Pods-UrbanDictionary.debug.xcconfig"; sourceTree = "<group>"; };
 		5D2CA329E23104944D25ACA2 /* Pods_UrbanDictionary.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_UrbanDictionary.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		7C854F1321614679007341DB /* SearchTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchTableViewController.swift; sourceTree = "<group>"; };
 		7C85E09D215D5DD500DF3110 /* UrbanDictionary.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = UrbanDictionary.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7C85E0A0215D5DD500DF3110 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		7C85E0A2215D5DD500DF3110 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -64,6 +66,7 @@
 				7C85E0A0215D5DD500DF3110 /* AppDelegate.swift */,
 				7C85E0A2215D5DD500DF3110 /* ViewController.swift */,
 				7C85E0A4215D5DD500DF3110 /* Main.storyboard */,
+				7C854F1321614679007341DB /* SearchTableViewController.swift */,
 				7C85E0A7215D5DD600DF3110 /* Assets.xcassets */,
 				7C85E0A9215D5DD600DF3110 /* LaunchScreen.storyboard */,
 				7C85E0AC215D5DD600DF3110 /* Info.plist */,
@@ -211,6 +214,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				7C85E0A3215D5DD500DF3110 /* ViewController.swift in Sources */,
+				7C854F1421614679007341DB /* SearchTableViewController.swift in Sources */,
 				7C85E0A1215D5DD500DF3110 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
