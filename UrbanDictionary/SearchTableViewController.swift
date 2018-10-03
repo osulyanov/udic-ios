@@ -9,21 +9,68 @@
 import UIKit
 
 class SearchTableViewController: UIViewController, UISearchBarDelegate {
-
+    
+    var searchBar = UISearchBar()
+    var searchBarButtonItem:UIBarButtonItem?
+    var logoImageView:UIImageView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        createSearchBar()
+        // Can replace logoImageView for titleLabel of navbar
+        let logoImage = UIImage(named: "logo-navbar")!
+        logoImageView = UIImageView(frame: CGRect(x: 0, y: 0, width: logoImage.size.width, height: logoImage.size.height))
+        logoImageView.image = logoImage
+        navigationItem.titleView = logoImageView
+        
+        searchBar.delegate = self
+        searchBar.searchBarStyle = UISearchBar.Style.minimal
+        searchBar.showsCancelButton = true
+        searchBarButtonItem = navigationItem.rightBarButtonItem
     }
     
-    func createSearchBar() {
-        let searchBar = UISearchBar()
-        searchBar.showsCancelButton = false
-        searchBar.placeholder = "Search by dictionary"
-        searchBar.delegate = self
-        
-        self.navigationItem.titleView = searchBar
+    @IBAction func searchButtonPressed(sender: AnyObject) {
+        showSearchBar()
     }
+    
+    func showSearchBar() {
+        searchBar.alpha = 0
+        navigationItem.rightBarButtonItem = nil;
+
+        navigationItem.titleView = searchBar
+        navigationItem.setLeftBarButton(nil, animated: true)
+        UIView.animate(withDuration: 0.5, animations: {
+            self.searchBar.alpha = 1
+        }, completion: { finished in
+            self.searchBar.becomeFirstResponder()
+        })
+    }
+    
+    func hideSearchBar() {
+        navigationItem.setRightBarButton(searchBarButtonItem, animated: true)
+        logoImageView.alpha = 0
+        UIView.animate(withDuration: 0.3, animations: {
+            self.navigationItem.titleView = self.logoImageView
+            self.logoImageView.alpha = 1
+        }, completion: { finished in
+            
+        })
+    }
+    
+    
+    //MARK: UISearchBarDelegate
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        hideSearchBar()
+    }
+    
+//    func createSearchBar() {
+//        let searchBar = UISearchBar()
+//        searchBar.showsCancelButton = false
+//        searchBar.placeholder = "Search by dictionary"
+//        searchBar.delegate = self
+//
+//        self.navigationItem.titleView = searchBar
+//    }
 
     /*
     // MARK: - Navigation
