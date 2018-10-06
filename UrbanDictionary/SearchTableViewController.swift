@@ -8,10 +8,16 @@
 
 import UIKit
 import Alamofire
+import SwiftyJSON
 
 class SearchTableViewController: UIViewController {
     
-//    var fuckingWords = [String]
+    var terms: [Term] = [] {
+        didSet {
+            print("Term did set!")
+        }
+    }
+    
     var searchBar = UISearchBar()
     var searchBarButtonItem:UIBarButtonItem?
     var logoImageView:UIImageView!
@@ -19,7 +25,6 @@ class SearchTableViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Can replace logoImageView for titleLabel of navbar
         let logoImage = UIImage(named: "logo-navbar")!
         logoImageView = UIImageView(frame: CGRect(x: 0, y: 0, width: logoImage.size.width, height: logoImage.size.height))
         logoImageView.image = logoImage
@@ -69,13 +74,25 @@ class SearchTableViewController: UIViewController {
         
         Alamofire.request(url, parameters: parameters).responseJSON { (response) in
             if let value = response.value {
-                print(value)
+                let json = JSON(value)
+                let jsonArray = json["list"].arrayValue
+                var results: [Term] = []
+                for object in jsonArray {
+                    let term = Term(defid: object["defid"].int64Value,
+                                    word: object["word"].stringValue,
+                                    definition: object["definition"].stringValue,
+                                    example: object["example"].stringValue)
+                    results.append(term)
+                }
+                print("results= \(results)")
+                self.terms = results
             }
         }
     }
 }
 
 extension SearchTableViewController: UISearchBarDelegate {
+    
     // MARK: - UISearchBarDelegate
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
@@ -88,7 +105,7 @@ extension SearchTableViewController: UISearchBarDelegate {
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         if searchBarIsEmpty() {
-            // Show placeholder
+            // Hide TableView and Show placeholder
             NSLog("Search ended")
         } else {
             // Show results
@@ -103,13 +120,11 @@ extension SearchTableViewController: UITableViewDelegate, UITableViewDataSource 
     // MARK: - Table view data source
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
         return 1
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
-        return 50
+        return terms.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

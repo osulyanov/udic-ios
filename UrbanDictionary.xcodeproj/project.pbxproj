@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		7C854F1421614679007341DB /* SearchTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C854F1321614679007341DB /* SearchTableViewController.swift */; };
 		7C854F1621614A4D007341DB /* DefinitionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C854F1521614A4D007341DB /* DefinitionTableViewCell.swift */; };
+		7C854F182168D338007341DB /* Term.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C854F172168D338007341DB /* Term.swift */; };
 		7C85E0A1215D5DD500DF3110 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C85E0A0215D5DD500DF3110 /* AppDelegate.swift */; };
 		7C85E0A6215D5DD500DF3110 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7C85E0A4215D5DD500DF3110 /* Main.storyboard */; };
 		7C85E0A8215D5DD600DF3110 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7C85E0A7215D5DD600DF3110 /* Assets.xcassets */; };
@@ -22,6 +23,7 @@
 		5D2CA329E23104944D25ACA2 /* Pods_UrbanDictionary.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_UrbanDictionary.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7C854F1321614679007341DB /* SearchTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchTableViewController.swift; sourceTree = "<group>"; };
 		7C854F1521614A4D007341DB /* DefinitionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefinitionTableViewCell.swift; sourceTree = "<group>"; };
+		7C854F172168D338007341DB /* Term.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Term.swift; sourceTree = "<group>"; };
 		7C85E09D215D5DD500DF3110 /* UrbanDictionary.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = UrbanDictionary.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7C85E0A0215D5DD500DF3110 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		7C85E0A5215D5DD500DF3110 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -67,6 +69,7 @@
 				7C85E0A4215D5DD500DF3110 /* Main.storyboard */,
 				7C854F1521614A4D007341DB /* DefinitionTableViewCell.swift */,
 				7C854F1321614679007341DB /* SearchTableViewController.swift */,
+				7C854F172168D338007341DB /* Term.swift */,
 				7C85E0A7215D5DD600DF3110 /* Assets.xcassets */,
 				7C85E0A9215D5DD600DF3110 /* LaunchScreen.storyboard */,
 				7C85E0AC215D5DD600DF3110 /* Info.plist */,
@@ -214,6 +217,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				7C854F1621614A4D007341DB /* DefinitionTableViewCell.swift in Sources */,
+				7C854F182168D338007341DB /* Term.swift in Sources */,
 				7C854F1421614679007341DB /* SearchTableViewController.swift in Sources */,
 				7C85E0A1215D5DD500DF3110 /* AppDelegate.swift in Sources */,
 			);
