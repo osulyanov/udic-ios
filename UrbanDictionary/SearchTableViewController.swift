@@ -12,15 +12,17 @@ import SwiftyJSON
 
 class SearchTableViewController: UIViewController {
     
-    var terms: [Term] = [] {
-        didSet {
-            print("Term did set!")
-        }
-    }
-    
     var searchBar = UISearchBar()
     var searchBarButtonItem:UIBarButtonItem?
     var logoImageView:UIImageView!
+    
+    @IBOutlet weak var tableView: UITableView!
+    
+    var terms: [Term] = [] {
+        didSet {
+            tableView.reloadData()
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -61,8 +63,33 @@ class SearchTableViewController: UIViewController {
             self.navigationItem.titleView = self.logoImageView
             self.logoImageView.alpha = 1
         }, completion: { finished in
-            
+            self.terms.removeAll(keepingCapacity: true)
         })
+    }
+}
+
+extension SearchTableViewController: UISearchBarDelegate {
+    
+    // MARK: - UISearchBarDelegate
+    
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        hideSearchBar()
+    }
+    
+    func searchBarIsEmpty() -> Bool {
+        return searchBar.text?.isEmpty ?? true
+    }
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        if searchBarIsEmpty() {
+            // Hide TableView and Show placeholder
+            NSLog("Search ended")
+            terms.removeAll(keepingCapacity: false)
+        } else {
+            // Show results
+            NSLog("Search by '%@'", searchText)
+            fetchWords(by: searchText)
+        }
     }
     
     func fetchWords(by searchText: String) {
@@ -91,30 +118,6 @@ class SearchTableViewController: UIViewController {
     }
 }
 
-extension SearchTableViewController: UISearchBarDelegate {
-    
-    // MARK: - UISearchBarDelegate
-    
-    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        hideSearchBar()
-    }
-    
-    func searchBarIsEmpty() -> Bool {
-        return searchBar.text?.isEmpty ?? true
-    }
-    
-    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        if searchBarIsEmpty() {
-            // Hide TableView and Show placeholder
-            NSLog("Search ended")
-        } else {
-            // Show results
-            NSLog("Search by '%@'", searchText)
-            fetchWords(by: searchText)
-        }
-    }
-}
-
 extension SearchTableViewController: UITableViewDelegate, UITableViewDataSource {
     
     // MARK: - Table view data source
@@ -130,7 +133,8 @@ extension SearchTableViewController: UITableViewDelegate, UITableViewDataSource 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "DefinitionTableViewCell", for: indexPath) as! DefinitionTableViewCell
         
-        // Configure the cell...
+        let term = terms[indexPath.row]
+//        cell.textLabel?.text = term.definition
         
         return cell
     }
