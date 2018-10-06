@@ -7,9 +7,11 @@
 //
 
 import UIKit
+import Alamofire
 
-class SearchTableViewController: UIViewController, UISearchBarDelegate {
+class SearchTableViewController: UIViewController {
     
+//    var fuckingWords = [String]
     var searchBar = UISearchBar()
     var searchBarButtonItem:UIBarButtonItem?
     var logoImageView:UIImageView!
@@ -26,6 +28,7 @@ class SearchTableViewController: UIViewController, UISearchBarDelegate {
         searchBar.delegate = self
         searchBar.searchBarStyle = UISearchBar.Style.minimal
         searchBar.showsCancelButton = true
+        searchBar.placeholder = "Search Words"
         searchBarButtonItem = navigationItem.rightBarButtonItem
     }
     
@@ -57,31 +60,42 @@ class SearchTableViewController: UIViewController, UISearchBarDelegate {
         })
     }
     
+    func fetchWords(by searchText: String) {
+        let url = "https://api.urbandictionary.com/v0/define"
+        
+        let parameters = [
+            "term": searchText
+        ]
+        
+        Alamofire.request(url, parameters: parameters).responseJSON { (response) in
+            if let value = response.value {
+                print(value)
+            }
+        }
+    }
+}
+
+extension SearchTableViewController: UISearchBarDelegate {
+    // MARK: - UISearchBarDelegate
     
-    //MARK: UISearchBarDelegate
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         hideSearchBar()
     }
     
-//    func createSearchBar() {
-//        let searchBar = UISearchBar()
-//        searchBar.showsCancelButton = false
-//        searchBar.placeholder = "Search by dictionary"
-//        searchBar.delegate = self
-//
-//        self.navigationItem.titleView = searchBar
-//    }
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    func searchBarIsEmpty() -> Bool {
+        return searchBar.text?.isEmpty ?? true
     }
-    */
-
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        if searchBarIsEmpty() {
+            // Show placeholder
+            NSLog("Search ended")
+        } else {
+            // Show results
+            NSLog("Search by '%@'", searchText)
+            fetchWords(by: searchText)
+        }
+    }
 }
 
 extension SearchTableViewController: UITableViewDelegate, UITableViewDataSource {
