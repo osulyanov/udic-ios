@@ -37,6 +37,9 @@ class SearchTableViewController: UIViewController {
         searchBar.showsCancelButton = true
         searchBar.placeholder = "Search Words"
         searchBarButtonItem = navigationItem.rightBarButtonItem
+        
+        tableView.estimatedRowHeight = 270.0
+        tableView.rowHeight = UITableView.automaticDimension
     }
     
     @IBAction func searchButtonPressed(sender: AnyObject) {
@@ -134,7 +137,9 @@ extension SearchTableViewController: UITableViewDelegate, UITableViewDataSource 
         let cell = tableView.dequeueReusableCell(withIdentifier: "DefinitionTableViewCell", for: indexPath) as! DefinitionTableViewCell
         
         let term = terms[indexPath.row]
-//        cell.textLabel?.text = term.definition
+        cell.labelWord?.text = term.word
+        cell.labelDefinition?.text = term.definition
+        cell.labelExample?.text = term.example
         
         return cell
     }
