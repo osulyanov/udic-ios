@@ -38,7 +38,7 @@ class SearchTableViewController: UIViewController {
         searchBar.placeholder = "Search Words"
         searchBarButtonItem = navigationItem.rightBarButtonItem
         
-        tableView.estimatedRowHeight = 270.0
+        tableView.estimatedRowHeight = 323.0
         tableView.rowHeight = UITableView.automaticDimension
     }
     
