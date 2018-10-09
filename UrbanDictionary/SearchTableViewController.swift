@@ -16,13 +16,18 @@ class SearchTableViewController: UIViewController {
     var searchBarButtonItem:UIBarButtonItem?
     var logoImageView:UIImageView!
     
+    var isFetchingNextPage = false
+    var currentPage = 1
+    
     @IBOutlet weak var tableView: UITableView!
     
     var terms: [Term] = [] {
         didSet {
             tableView.reloadData()
-            let topIndex = IndexPath(row: 0, section: 0)
-            tableView.scrollToRow(at: topIndex, at: .top, animated: true)
+            if terms.count > 0 && currentPage == 1 {
+                let topIndex = IndexPath(row: 0, section: 0)
+                tableView.scrollToRow(at: topIndex, at: .top, animated: true)
+            }
         }
     }
     
@@ -81,28 +86,53 @@ class SearchTableViewController: UIViewController {
         })
     }
     
-    func fetchTerms(from url: String, with parameters: [String : String]? = nil) {
+    func fetchTerms(from url: String, with parameters: [String : Any]? = nil) {
         Alamofire.request(url, parameters: parameters).responseJSON { (response) in
             if let value = response.value {
                 let json = JSON(value)
                 let jsonArray = json["list"].arrayValue
-                var results: [Term] = []
+                
                 for object in jsonArray {
                     let term = Term(defid: object["defid"].int64Value,
                                     word: object["word"].stringValue,
                                     definition: object["definition"].stringValue,
                                     example: object["example"].stringValue)
-                    results.append(term)
+                    
+                    if !self.terms.contains { $0.defid == term.defid } {
+                        self.terms.append(term)
+                    }
                 }
-                print("results= \(results)")
-                self.terms = results
+                
+                self.isFetchingNextPage = false
             }
         }
     }
     
     func showTermsFeed() {
+        currentPage = 1
+        self.terms.removeAll(keepingCapacity: false)
+        fetchTermsFeed()
+    }
+    
+    func fetchNextPage() {
+        print("Load more")
+        
+        guard !isFetchingNextPage else { return }
+        currentPage += 1
+        fetchTermsFeed()
+    }
+    
+    func fetchTermsFeed(refresh: Bool = false) {
         let url = "https://api.urbandictionary.com/v0/words_of_the_day"
-        fetchTerms(from: url)
+        
+        print("Fetching page \(currentPage)")
+        isFetchingNextPage = true
+        
+        let parameters = [
+            "page": currentPage
+        ]
+        
+        fetchTerms(from: url, with: parameters)
     }
 }
 
@@ -111,6 +141,7 @@ extension SearchTableViewController: UISearchBarDelegate {
     // MARK: - UISearchBarDelegate
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        searchBar.text = ""
         hideSearchBar()
     }
     
@@ -137,6 +168,7 @@ extension SearchTableViewController: UISearchBarDelegate {
             "term": searchText
         ]
         
+        self.terms.removeAll(keepingCapacity: false)
         fetchTerms(from: url, with: parameters)
     }
 }
@@ -154,6 +186,10 @@ extension SearchTableViewController: UITableViewDelegate, UITableViewDataSource 
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        if indexPath.row == terms.count - 3 && searchBarIsEmpty() {
+            fetchNextPage()
+        }
+        
         let cell = tableView.dequeueReusableCell(withIdentifier: "DefinitionTableViewCell", for: indexPath) as! DefinitionTableViewCell
         
         let term = terms[indexPath.row]
