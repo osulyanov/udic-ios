@@ -21,29 +21,40 @@ class SearchTableViewController: UIViewController {
     var terms: [Term] = [] {
         didSet {
             tableView.reloadData()
+            let topIndex = IndexPath(row: 0, section: 0)
+            tableView.scrollToRow(at: topIndex, at: .top, animated: true)
         }
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        setLogo()
+        setSearchBar()
+        
+        tableView.estimatedRowHeight = 323.0
+        tableView.rowHeight = UITableView.automaticDimension
+        
+        showTermsFeed()
+    }
+    
+    @IBAction func searchButtonPressed(sender: AnyObject) {
+        showSearchBar()
+    }
+    
+    func setLogo() {
         let logoImage = UIImage(named: "logo-navbar")!
         logoImageView = UIImageView(frame: CGRect(x: 0, y: 0, width: logoImage.size.width, height: logoImage.size.height))
         logoImageView.image = logoImage
         navigationItem.titleView = logoImageView
-        
+    }
+    
+    func setSearchBar() {
         searchBar.delegate = self
         searchBar.searchBarStyle = UISearchBar.Style.minimal
         searchBar.showsCancelButton = true
         searchBar.placeholder = "Search Words"
         searchBarButtonItem = navigationItem.rightBarButtonItem
-        
-        tableView.estimatedRowHeight = 323.0
-        tableView.rowHeight = UITableView.automaticDimension
-    }
-    
-    @IBAction func searchButtonPressed(sender: AnyObject) {
-        showSearchBar()
     }
     
     func showSearchBar() {
@@ -66,8 +77,32 @@ class SearchTableViewController: UIViewController {
             self.navigationItem.titleView = self.logoImageView
             self.logoImageView.alpha = 1
         }, completion: { finished in
-            self.terms.removeAll(keepingCapacity: true)
+            self.showTermsFeed()
         })
+    }
+    
+    func fetchTerms(from url: String, with parameters: [String : String]? = nil) {
+        Alamofire.request(url, parameters: parameters).responseJSON { (response) in
+            if let value = response.value {
+                let json = JSON(value)
+                let jsonArray = json["list"].arrayValue
+                var results: [Term] = []
+                for object in jsonArray {
+                    let term = Term(defid: object["defid"].int64Value,
+                                    word: object["word"].stringValue,
+                                    definition: object["definition"].stringValue,
+                                    example: object["example"].stringValue)
+                    results.append(term)
+                }
+                print("results= \(results)")
+                self.terms = results
+            }
+        }
+    }
+    
+    func showTermsFeed() {
+        let url = "https://api.urbandictionary.com/v0/words_of_the_day"
+        fetchTerms(from: url)
     }
 }
 
@@ -87,37 +122,22 @@ extension SearchTableViewController: UISearchBarDelegate {
         if searchBarIsEmpty() {
             // Hide TableView and Show placeholder
             NSLog("Search ended")
-            terms.removeAll(keepingCapacity: false)
+            showTermsFeed()
         } else {
             // Show results
             NSLog("Search by '%@'", searchText)
-            fetchWords(by: searchText)
+            searchTerms(by: searchText)
         }
     }
     
-    func fetchWords(by searchText: String) {
+    func searchTerms(by searchText: String) {
         let url = "https://api.urbandictionary.com/v0/define"
         
         let parameters = [
             "term": searchText
         ]
         
-        Alamofire.request(url, parameters: parameters).responseJSON { (response) in
-            if let value = response.value {
-                let json = JSON(value)
-                let jsonArray = json["list"].arrayValue
-                var results: [Term] = []
-                for object in jsonArray {
-                    let term = Term(defid: object["defid"].int64Value,
-                                    word: object["word"].stringValue,
-                                    definition: object["definition"].stringValue,
-                                    example: object["example"].stringValue)
-                    results.append(term)
-                }
-                print("results= \(results)")
-                self.terms = results
-            }
-        }
+        fetchTerms(from: url, with: parameters)
     }
 }
 
